@@ -3,19 +3,17 @@ import PyPDF2
 import requests
 import json
 
-# 1. Access Control
+# 1. Access Control using your hidden secret
 st.title("Secure AI Document Extractor")
 password = st.text_input("Enter App Password", type="password")
 
-if password != "mysecret123":
+# Pulls the password from Streamlit Secrets behind the scenes
+if password != st.secrets["APP_PASSWORD"]:
     st.warning("Please enter the correct password to continue.")
     st.stop()
 
-# 2. Secure API Key Input
-api_key = st.text_input("Enter your Groq API Key", type="password")
-if not api_key:
-    st.info("API Key required to run the AI.")
-    st.stop()
+# 2. Automatically load the hidden API Key (No user input required!)
+api_key = st.secrets["GROQ_API_KEY"]
 
 # 3. File Uploader (Accepts MULTIPLE files)
 uploaded_files = st.file_uploader("Upload your PDFs here", type="pdf", accept_multiple_files=True)
